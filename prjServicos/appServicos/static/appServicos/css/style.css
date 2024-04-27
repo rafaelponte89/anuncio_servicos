@@ -1,0 +1,18 @@
+.tijolo {
+	background-color: #9C2E2E;
+	height: 80px;
+	box-shadow: 4px 2px 10px  black;
+	border: 5px solid whitesmoke;
+
+}
+
+a{
+	text-decoration: none;
+}
+
+.botao-comprido {
+	padding-left: 200px;
+	padding-right: 200px;
+}
+
+

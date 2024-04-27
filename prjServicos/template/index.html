@@ -1,0 +1,655 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>index</title>
+    <meta name="author" content="rafae" />
+    <meta name="date" content="2024-04-06T13:02:11-0300" />
+    <meta name="copyright" content="" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta
+      http-equiv="content-type"
+      content="application/xhtml+xml; charset=UTF-8"
+    />
+    <meta http-equiv="content-style-type" content="text/css" />
+    <meta http-equiv="expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'appServicos/css/style.css' %}"
+      media="screen"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <meta />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-2 tijolo mt-1"></div>
+        <div class="col-8">
+          <nav id="menu" class="navbar navbar-expand-lg bg-warning rounded-2">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">LOGO</a>
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item m-2">
+                    <input
+                      type="text"
+                      id="pesquisa"
+                      placeholder="Pesquisa"
+                      class="form-control"
+                    />
+                  </li>
+
+                  <li class="nav-item m-2">
+                    <select
+                      id="estados"
+                      class="form-control"
+                      title="Selecione o Estado"
+                    >
+                      <!--Estados Aqui-->
+                    </select>
+                  </li>
+                  <li class="nav-item m-2">
+                    <select
+                      id="municipios"
+                      class="form-control"
+                      title="Para os municípios aparecerem selecionar Estado"
+                    >
+                      <!--Municipios Aqui-->
+                    </select>
+                  </li>
+
+                 
+
+                  <li class="nav-item m-2">
+                    <button
+                      id="btn_pesquisa"
+                      class="btn btn-light btn-outline-dark rounded-circle"
+                      title="Click para Pesquisar"
+                    >
+                      <i class="bi bi-search"></i>
+                    </button>
+                  </li>
+                  {% if autenticado %}
+                  <input type="hidden" id="hidden_estado" value="{{estado}}" />
+                  <input
+                    type="hidden"
+                    id="hidden_municipio"
+                    value="{{municipio}}"
+                  />
+
+                  <li class="nav-item dropdown">
+                    <a
+                      class="nav-link dropdown-toggle"
+                      href="#"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="bi bi-megaphone"></i>Anúncios
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li class="nav-item m-2">
+                        <a
+                          id="anunciar"
+                          class="btn btn-outline-dark"
+                          href="{% url 'anunciar' %}"
+                          title="Anunciar Serviço"
+                        >
+                          Anunciar
+                        </a>
+                      </li>
+
+                      <li class="nav-item m-2">
+                        <a
+                          id="anuncios"
+                          class="btn btn-outline-dark"
+                          href="#"
+                          title="Meus Anúncios"
+                        >
+                          Meus Anúncios</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li class="nav-item dropdown">
+                    <a
+                      class="nav-link dropdown-toggle"
+                      href="#"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Opções
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li class="nav-item m-2">
+                        <a
+                          id="nome"
+                          class="btn btn-outline-dark"
+                          href="{% url 'carregar_dados_cadastrais' %}"
+                        >
+                          {{nome}}</a
+                        >
+                      </li>
+                      <li class="nav-item m-2">
+                        <a
+                          id="sair"
+                          class="btn btn-outline-success"
+                          href="{% url 'sair' %}"
+                        >
+                          Sair</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+
+                  {% else %}
+                  <li class="nav-item m-2">
+                    <a id="entrar" href="{% url 'login' %}"> Entrar</a>
+                  </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </div>
+        <div class="col-2 tijolo mt-1"></div>
+      </div>
+      <div class="row">
+        <div class="col-2 tijolo mt-1"></div>
+
+        <div class="col-3"></div>
+        <div class="col-2 mt-1 text-center">
+          <label class="form-label"> <strong>Top Média</strong></label>
+
+          <input
+            type="range"
+            class="form-range"
+            id="media_rank"
+            min="0"
+            max="5"
+            value="0"
+            stetp="1"
+          />
+        </div>
+        <div class="col-3"></div>
+        <div class="col-2 tijolo mt-1"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-3 tijolo mt-1"></div>
+        <div class="col-6"></div>
+        <div class="col-3 tijolo mt-1"></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="conteudo" class="row text-center d-flex justify-content-center">
+        <!--Cards de anúncios-->
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="editarAnuncio"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Atualizar Anúncio
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="conteudoAtualizar">
+              <!--Conteúdo-->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              id="fechar"
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+            <button id="atualizar" type="button" class="btn btn-success">
+              Atualizar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Avaliação-->
+    <div
+      class="modal fade"
+      id="avaliacaoModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Avaliação do Anúncio
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="conteudoAvaliacao">
+              <!--Conteúdo-->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              id="fechar"
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+            <button id="btn_avaliar" type="button" class="btn btn-success">
+              Avaliar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Exibir Média -->
+    <div
+      class="modal fade"
+      id="mediaModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Exibição da Avaliação Geral
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="conteudoMedia">
+              <!--Conteúdo-->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              id="fechar"
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        function exibir_tela_anuncio(identificador) {
+          $.get({
+            url: "{% url 'tela_atualizar_anuncio' %}",
+            data: {
+              id: identificador,
+            },
+            success: (response) => {
+              $("#conteudoAtualizar").html(response);
+            },
+            fail: (response) => {},
+          });
+        }
+
+        function exibir_media_avaliacao(identificador) {
+          $.get({
+            url: "{% url 'exibir_media_avaliacao' %}",
+            data: {
+              id: identificador,
+            },
+            success: (response) => {
+              $("#conteudoMedia").html(response);
+            },
+            fail: (response) => {},
+          });
+        }
+
+        function exibir_tela_avaliacao(identificador) {
+          $.get({
+            url: "{% url 'tela_avaliar_anuncio' %}",
+            data: {
+              id: identificador,
+            },
+            success: (response) => {
+              $("#conteudoAvaliacao").html(response);
+
+              function estrelas(inicio, fim) {
+                var inicial = inicio;
+                var final = fim;
+                for (let i = inicio; i <= fim; i++) {
+                  $("#selecao" + i).change(function () {
+                    let inicio = inicial;
+                    let fim = final;
+                    for (let j = 1; j <= $(this).val(); j++) {
+                      $("#estrela" + inicio).addClass("text-warning");
+                      inicio++;
+                    }
+                    for (let j = 5; $(this).val() < j; j--) {
+                      $("#estrela" + fim).removeClass("text-warning");
+                      fim--;
+                    }
+                  });
+                }
+              }
+              estrelas(1, 5);
+              estrelas(6, 10);
+              estrelas(11, 15);
+              estrelas(16, 20);
+            },
+            fail: (response) => {},
+          });
+        }
+
+        function exibir_meus_anuncios() {
+          $.get({
+            url: "{% url 'exibir_meus_anuncios' %}",
+            data: {},
+            success: (response) => {
+              $("#conteudo").html(response);
+              $(".excluir").off();
+              $(".editar").off();
+              $("#atualizar").off();
+
+              $(".excluir").click(function () {
+                deletar_anuncio($(this).val());
+              });
+
+              $(".editar").click(function () {
+                exibir_tela_anuncio($(this).val());
+              });
+
+              $("#atualizar").click(function () {
+                atualizar_anuncio($("#codigoAnuncio").val());
+              });
+            },
+            fail: (response) => {},
+          });
+        }
+
+        function remover_estrelas(inicio, fim) {
+          for (let i = inicio; i <= fim; i++) {
+            $("#estrela" + i).removeClass("text-warning");
+          }
+        }
+
+        function avaliar_anuncio() {
+          $.post({
+            url: "{% url 'avaliar_anuncio' %}",
+            headers: { "X-CSRFToken": "{{csrf_token}}" },
+            data: {
+              anuncio: $("#anuncio").val(),
+              prazo: $("input[type='radio'][name='0']:checked").val(),
+              preco: $("input[type='radio'][name='1']:checked").val(),
+              qualidade: $("input[type='radio'][name='2']:checked").val(),
+              transparencia: $("input[type='radio'][name='3']:checked").val(),
+            },
+            success: (response) => {
+              alert(response);
+              pesquisar_prestadores();
+            },
+            fail: (response) => {
+              alert(response);
+            },
+          });
+        }
+
+        function pesquisar_prestadores() {
+          $.get({
+            url: "{% url 'pesquisar_prestadores' %}",
+            data: {
+              texto: $("#pesquisa").val(),
+              estado: $("#estados").val(),
+              municipio: $("#municipios").val(),
+              media_rank: $("#media_rank").val()
+            },
+            success: (response) => {
+              $("#conteudo").html(response);
+              $(".excluir").off();
+              $(".editar").off();
+              $("#atualizar").off();
+              $("#btn_avaliar").off();
+              $(".ver").off();
+              $(".avaliar").off();
+              $(".exibir_media").off();
+
+              $(".excluir").click(function () {
+                deletar_anuncio($(this).val());
+              });
+
+              $(".exibir_media").click(function () {
+                exibir_media_avaliacao($(this).val());
+              });
+
+              $(".editar").click(function () {
+                exibir_tela_anuncio($(this).val());
+              });
+
+              $("#atualizar").click(function () {
+                atualizar_anuncio($("#codigoAnuncio").val());
+              });
+
+              $(".ver").click(function () {
+                $(this).text($(this).val());
+              });
+
+              $(".avaliar").click(function () {
+                exibir_tela_avaliacao($(this).val());
+              });
+
+              $("#btn_avaliar").click(function () {
+                avaliar_anuncio();
+              });
+
+              /*for (let i = 1; i <= 5; i++) {
+                      $("#selecao" + i).change(function () {
+                        for (let j = 1; j <= $(this).val(); j++) {
+                          $("#estrela" + j).addClass("text-warning");
+                        }
+                        for (let j = 5; $(this).val() < j; j--) {
+                          $("#estrela" + j).removeClass("text-warning");
+                        }
+                      });
+                    }
+
+                    for (let i = 6; i <= 10; i++) {
+                      $("#selecao" + i).change(function () {
+                        let inicio = 6;
+                        let fim = 10;
+                        for (let j = 1; j <= $(this).val(); j++) {
+                          $("#estrela" + inicio).addClass("text-warning");
+                          inicio++;
+                        }
+                        for (let j = 5; $(this).val() < j; j--) {
+                          $("#estrela" + fim).removeClass("text-warning");
+                          fim--;
+                        }
+                      });
+                    }
+
+                    for (let i = 11; i <= 15; i++) {
+                      $("#selecao" + i).change(function () {
+                        let inicio = 11;
+                        let fim = 15;
+                        for (let j = 1; j <= $(this).val(); j++) {
+                          $("#estrela" + inicio).addClass("text-warning");
+                          inicio++;
+                        }
+                        for (let j = 5; $(this).val() < j; j--) {
+                          $("#estrela" + fim).removeClass("text-warning");
+                          fim--;
+                        }
+                      });
+                    }
+
+                    for (let i = 16; i <= 20; i++) {
+                      $("#selecao" + i).change(function () {
+                        let inicio = 16;
+                        let fim = 20;
+                        for (let j = 1; j <= $(this).val(); j++) {
+                          $("#estrela" + inicio).addClass("text-warning");
+                          inicio++;
+                        }
+                        for (let j = 5; $(this).val() < j; j--) {
+                          $("#estrela" + fim).removeClass("text-warning");
+                          fim--;
+                        }
+                      });
+                    }*/
+
+              /*function estrelas(inicio, fim) {
+                var inicial = inicio;
+                var final = fim;
+                for (let i = inicio; i <= fim; i++) {
+                  $("#selecao" + i).change(function () {
+                    let inicio = inicial;
+                    let fim = final;
+                    for (let j = 1; j <= $(this).val(); j++) {
+                      $("#estrela" + inicio).addClass("text-warning");
+                      inicio++;
+                    }
+                    for (let j = 5; $(this).val() < j; j--) {
+                      $("#estrela" + fim).removeClass("text-warning");
+                      fim--;
+                    }
+                  });
+                }
+              }
+              estrelas(1, 5);
+              estrelas(6, 10);
+              estrelas(11, 15);
+              estrelas(16, 20);
+            */
+            },
+            fail: (response) => {},
+          });
+        }
+
+        function deletar_anuncio(identificador) {
+          $.post({
+            url: "{% url 'deletar_anuncio' %}",
+            headers: { "X-CSRFToken": "{{csrf_token}}" },
+            data: {
+              id: identificador,
+            },
+            success: (response) => {
+              alert(response);
+              pesquisar_prestadores();
+              exibir_meus_anuncios();
+            },
+            fail: (response) => {
+              alert(response);
+            },
+          });
+        }
+
+        function atualizar_anuncio(identificador) {
+          $.post({
+            url: "{% url 'atualizar_anuncio' %}",
+            headers: { "X-CSRFToken": "{{csrf_token}}" },
+            data: {
+              id: identificador,
+              servico: $("#servicos").val(),
+              descricao: $("#descricao").val(),
+            },
+            success: (response) => {
+              alert(response);
+              pesquisar_prestadores();
+              exibir_meus_anuncios();
+              $("#fechar").trigger("click");
+            },
+            fail: (response) => {
+              alert(response);
+            },
+          });
+        }
+
+        carregar_estados();
+        $("#estados").change(() => {
+          carregar_municipios();
+        });
+        $("#btn_pesquisa").click(() => {
+          pesquisar_prestadores();
+        });
+        $("#anuncios").click(() => {
+          exibir_meus_anuncios();
+        });
+      });
+    </script>
+    <script src="{% static 'appServicos/js/estados_cidades.js' %}"></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+  </body>
+</html>
